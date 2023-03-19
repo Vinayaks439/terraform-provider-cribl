@@ -130,7 +130,7 @@ func (c *Client) PatchUserByID(id string, user *PatchUser) (Users, error) {
 }
 
 func (c *Client) DeleteUserbyID(id string) (Users, error) {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf(UsersURL+"/%s", id), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(UsersURL+"/%s/info", id), nil)
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
