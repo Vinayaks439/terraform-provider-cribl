@@ -1,12 +1,13 @@
-package cribl
+package criblclient
 
 import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
-const DefaultRestURL = "http://localhost:19000/api/v1"
+var DefaultRestURL = "http://" + os.Getenv("CRIBL_HOST") + "/api/v1"
 
 type Client struct {
 	HttpClient *http.Client

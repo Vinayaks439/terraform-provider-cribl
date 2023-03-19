@@ -1,4 +1,4 @@
-package cribl
+package criblclient
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-const UsersURL = DefaultRestURL + "/system/users"
+var UsersURL = DefaultRestURL + "/system/users"
 
 type GetUser struct {
 	Username string   `json:"username"`
