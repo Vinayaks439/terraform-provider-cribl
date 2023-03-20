@@ -30,7 +30,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"resource_local_user": ResourceLocalUser(),
+			"cribl_local_user": ResourceLocalUser(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			//"hashicups_coffees":     dataSourceCoffees(),
