@@ -14,7 +14,7 @@ func Provider() *schema.Provider {
 		Schema: map[string]*schema.Schema{
 			"host": &schema.Schema{
 				Type:        schema.TypeString,
-				Optional:    true,
+				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("CRIBL_HOST", nil),
 			},
 			"username": &schema.Schema{
@@ -27,6 +27,12 @@ func Provider() *schema.Provider {
 				Optional:    true,
 				Sensitive:   true,
 				DefaultFunc: schema.EnvDefaultFunc("CRIBL_PASSWORD", nil),
+			},
+			"api_token": &schema.Schema{
+				Type:        schema.TypeString,
+				Optional:    true,
+				Sensitive:   true,
+				DefaultFunc: schema.EnvDefaultFunc("API_TOKEN", nil),
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
@@ -44,11 +50,7 @@ func Provider() *schema.Provider {
 func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	username := d.Get("username").(string)
 	password := d.Get("password").(string)
-
-	authDetails := &criblclient.Auth{
-		Username: username,
-		Password: password,
-	}
+	api_token := d.Get("api_token").(string)
 
 	var host *string
 
@@ -58,11 +60,15 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		host = &tempHost
 	}
 
+	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	if (username != "") && (password != "") {
+	if api_token != "" {
+		return api_token, diags
+	}
 
-		c, err := criblclient.AuthLogin(authDetails, *host)
+	if (username != "") && (password != "") {
+		c, err := criblclient.NewClient(host, &username, &password)
 		if err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
@@ -76,7 +82,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return c, diags
 	}
 
-	c, err := criblclient.AuthLogin(nil, *host)
+	c, err := criblclient.NewClient(host, nil, nil)
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
