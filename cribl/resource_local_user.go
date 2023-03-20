@@ -43,7 +43,7 @@ func ResourceLocalUser() *schema.Resource {
 			},
 			"Password": &schema.Schema{
 				Type:     schema.TypeString,
-				Required: false,
+				Optional: true,
 			},
 		},
 		CreateContext: resourceLocalUserCreate,

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     cribl = {
       source = "Vinayaks439/cribl"
-      version = "1.0.0"
+      version = "1.0.2"
     }
   }
 }
