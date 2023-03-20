@@ -12,36 +12,36 @@ import (
 func ResourceLocalUser() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
-			"Username": &schema.Schema{
+			"username": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"First": &schema.Schema{
+			"first": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"Last": &schema.Schema{
+			"last": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"Email": &schema.Schema{
+			"email": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"Roles": &schema.Schema{
+			"roles": &schema.Schema{
 				Type:     schema.TypeList,
 				Optional: true,
 			},
-			"Id": &schema.Schema{
+			"id": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
-			"Disabled": &schema.Schema{
+			"disabled": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
 				Default:  true,
 			},
-			"Password": &schema.Schema{
+			"password": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 			},
@@ -59,14 +59,14 @@ func resourceLocalUserCreate(ctx context.Context, d *schema.ResourceData, m inte
 	var diags diag.Diagnostics
 
 	user := &criblclient.CreateUser{
-		Username: d.Get("Username").(string),
-		First:    d.Get("First").(string),
-		Last:     d.Get("Last").(string),
-		Email:    d.Get("Email").(string),
-		Roles:    d.Get("Roles").([]string),
-		Id:       d.Get("Id").(string),
-		Disabled: d.Get("Disabled").(bool),
-		Password: d.Get("Password").(string),
+		Username: d.Get("username").(string),
+		First:    d.Get("first").(string),
+		Last:     d.Get("last").(string),
+		Email:    d.Get("email").(string),
+		Roles:    d.Get("roles").([]string),
+		Id:       d.Get("id").(string),
+		Disabled: d.Get("disabled").(bool),
+		Password: d.Get("password").(string),
 	}
 
 	createUser, err := c.CreateUser(user)
@@ -89,13 +89,13 @@ func resourceLocalUserRead(ctx context.Context, d *schema.ResourceData, m interf
 		return diag.FromErr(err)
 	}
 	for _, key := range getUserbyID.Items {
-		d.Set("Username", key.Username)
-		d.Set("First", key.First)
-		d.Set("Last", key.Last)
-		d.Set("Email", key.Email)
-		d.Set("Roles", key.Roles)
-		d.Set("Id", key.Id)
-		d.Set("Disabled", key.Disabled)
+		d.Set("username", key.Username)
+		d.Set("first", key.First)
+		d.Set("last", key.Last)
+		d.Set("email", key.Email)
+		d.Set("roles", key.Roles)
+		d.Set("id", key.Id)
+		d.Set("disabled", key.Disabled)
 	}
 	return diags
 }
@@ -104,16 +104,16 @@ func resourceLocalUserupdate(ctx context.Context, d *schema.ResourceData, m inte
 	c := m.(*criblclient.Client)
 
 	user := &criblclient.PatchUser{
-		Username: d.Get("Username").(string),
-		First:    d.Get("First").(string),
-		Last:     d.Get("Last").(string),
-		Email:    d.Get("Email").(string),
-		Roles:    d.Get("Roles").([]string),
-		Id:       d.Get("Id").(string),
-		Disabled: d.Get("Disabled").(bool),
-		Password: d.Get("Password").(string),
+		Username: d.Get("username").(string),
+		First:    d.Get("first").(string),
+		Last:     d.Get("last").(string),
+		Email:    d.Get("email").(string),
+		Roles:    d.Get("roles").([]string),
+		Id:       d.Get("id").(string),
+		Disabled: d.Get("disabled").(bool),
+		Password: d.Get("password").(string),
 	}
-	changedParams := []string{"Username", "First", "Last", "Email", "Id", "Disabled", "Password", "Roles"}
+	changedParams := []string{"username", "first", "last", "email", "id", "disabled", "password", "roles"}
 	for _, key := range changedParams {
 		if d.HasChange(key) {
 			_, err := c.PatchUserInfo(d.Id(), user)
