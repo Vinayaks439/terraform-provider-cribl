@@ -38,7 +38,7 @@ func ResourceLocalUser() *schema.Resource {
 			},
 			"Disabled": &schema.Schema{
 				Type:     schema.TypeBool,
-				Required: false,
+				Optional: true,
 				Default:  true,
 			},
 			"Password": &schema.Schema{
