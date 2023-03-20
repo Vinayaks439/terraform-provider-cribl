@@ -1,11 +1,11 @@
-package hashicups
+package cribl
 
 import (
 	"context"
 
+	"github.com/Vinayaks439/terraform-provider-cribl/criblclient"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/terraform-provider-cribl/criblclient"
 )
 
 // Provider -
@@ -30,12 +30,12 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"hashicups_order": resourceOrder(),
+			"resource_local_user": ResourceLocalUser(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"hashicups_coffees":     dataSourceCoffees(),
-			"hashicups_order":       dataSourceOrder(),
-			"hashicups_ingredients": dataSourceIngredients(),
+			//"hashicups_coffees":     dataSourceCoffees(),
+			//"hashicups_order":       dataSourceOrder(),
+			//"hashicups_ingredients": dataSourceIngredients(),
 		},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -46,8 +46,8 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	password := d.Get("password").(string)
 
 	authDetails := &criblclient.Auth{
-		Username : username,
-		Password : password
+		Username: username,
+		Password: password,
 	}
 
 	var host *string
@@ -62,7 +62,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 
 	if (username != "") && (password != "") {
 
-		c, err := criblclient.AuthLogin(authDetails)
+		c, err := criblclient.AuthLogin(authDetails, *host)
 		if err != nil {
 			diags = append(diags, diag.Diagnostic{
 				Severity: diag.Error,
@@ -76,7 +76,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 		return c, diags
 	}
 
-	c, err := criblclient.AuthLogin(nil)
+	c, err := criblclient.AuthLogin(nil, *host)
 	if err != nil {
 		diags = append(diags, diag.Diagnostic{
 			Severity: diag.Error,
