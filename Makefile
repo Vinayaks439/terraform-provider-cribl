@@ -3,7 +3,7 @@ HOSTNAME=cribl.com
 NAMESPACE=criblprovider
 NAME=cribl
 BINARY=terraform-provider-${NAME}
-VERSION=1.0.4
+VERSION=1.0.5
 OS_ARCH=darwin_arm64
 
 default: install

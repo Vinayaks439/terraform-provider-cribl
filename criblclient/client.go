@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 )
 
-var DefaultRestURL = "http://" + os.Getenv("CRIBL_HOST") + "/api/v1"
+var DefaultRestURL = "http://127.0.0.1:19000" + "/api/v1"
 
 type Client struct {
 	Host       string
