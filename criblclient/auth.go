@@ -26,7 +26,7 @@ func (c *Client) AuthLogin() (*AuthResponse, error) {
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}

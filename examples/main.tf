@@ -1,8 +1,12 @@
 resource "cribl_local_user" "provideruser" {
-  username = "providerUser123"
-  first = "createdby"
-  last = "provider"
-  email = "createdbyprovider@gmail.com"
-  id = "providerUser"
-  password = "password1234"
+  items {
+    id = "vinayak"
+    username = "providerUser12345"
+    first = "customprovider"
+    last = "provider"
+    email = "provider@gmail.com"
+    roles = ["user"]
+    password = "password1234asad"
+    disabled = false
+  }
 }

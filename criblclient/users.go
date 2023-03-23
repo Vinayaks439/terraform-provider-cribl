@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-var UsersURL = DefaultRestURL + "/system/users"
+var apiPath = "/api/v1/system/users"
 
 type GetUser struct {
 	Username string   `json:"username"`
@@ -47,13 +47,13 @@ type Users struct {
 	Count int       `json:"count"`
 }
 
-func (c *Client) GetUsers() (Users, error) {
-	req, err := http.NewRequest("GET", UsersURL, nil)
+func (c *Client) GetUsers() (*Users, error) {
+	req, err := http.NewRequest("GET", c.Host+apiPath, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
 
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -63,20 +63,20 @@ func (c *Client) GetUsers() (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (c *Client) CreateUser(user *CreateUser) (Users, error) {
+func (c *Client) CreateUser(user []CreateUser) (*Users, error) {
 	body, err := json.Marshal(user)
 	if err != nil {
 		log.Fatalln("Error Occured while Marshalling the body : ", err)
 	}
-	req, err := http.NewRequest("POST", UsersURL, bytes.NewBuffer(body))
+	req, err := http.NewRequest("POST", c.Host+apiPath, bytes.NewBuffer(body))
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
 
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -86,15 +86,15 @@ func (c *Client) CreateUser(user *CreateUser) (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (c *Client) GetUserByID(id string) (Users, error) {
-	req, err := http.NewRequest("GET", fmt.Sprintf(UsersURL+"/%s", id), nil)
+func (c *Client) GetUserByID(id string) (*Users, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf(c.Host+apiPath+"/%s", id), nil)
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -104,19 +104,19 @@ func (c *Client) GetUserByID(id string) (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (c *Client) PatchUserByID(id string, user *PatchUser) (Users, error) {
+func (c *Client) PatchUserByID(id string, user []PatchUser) (*Users, error) {
 	body, err := json.Marshal(user)
 	if err != nil {
 		log.Fatalln("Error Occured while Marshalling the body : ", err)
 	}
-	req, err := http.NewRequest("PATCH", fmt.Sprintf(UsersURL+"/%s", id), bytes.NewBuffer(body))
+	req, err := http.NewRequest("PATCH", fmt.Sprintf(c.Host+apiPath+"/%s", id), bytes.NewBuffer(body))
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -126,15 +126,15 @@ func (c *Client) PatchUserByID(id string, user *PatchUser) (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (c *Client) DeleteUserbyID(id string) (Users, error) {
-	req, err := http.NewRequest("DELETE", fmt.Sprintf(UsersURL+"/%s/info", id), nil)
+func (c *Client) DeleteUserbyID(id string) (*Users, error) {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf(c.Host+apiPath+"/%s/info", id), nil)
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -144,19 +144,19 @@ func (c *Client) DeleteUserbyID(id string) (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
-func (c *Client) PatchUserInfo(id string, user *PatchUser) (Users, error) {
+func (c *Client) PatchUserInfo(id string, user []PatchUser) (*Users, error) {
 	body, err := json.Marshal(user)
 	if err != nil {
 		log.Fatalln("Error Occured while Marshalling the body : ", err)
 	}
-	req, err := http.NewRequest("PATCH", fmt.Sprintf(UsersURL+"/%s", id), bytes.NewBuffer(body))
+	req, err := http.NewRequest("PATCH", fmt.Sprintf(c.Host+apiPath+"/%s", id), bytes.NewBuffer(body))
 	if err != nil {
 		log.Fatalln("Error Occured while initializing new request : ", err)
 	}
-	res, err := c.doRequest(req)
+	res, err := c.doRequest(req, nil)
 	if err != nil {
 		log.Fatalln("Error Occured while doing the POST call : ", err)
 	}
@@ -166,5 +166,5 @@ func (c *Client) PatchUserInfo(id string, user *PatchUser) (Users, error) {
 		log.Fatalln("Error Occured while Unmarshalling: ", err)
 	}
 
-	return users, nil
+	return &users, nil
 }

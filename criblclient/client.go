@@ -62,10 +62,15 @@ func (c *Client) newRequest(path string) (*http.Request, error) {
 	return req, nil
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+func (c *Client) doRequest(req *http.Request, authToken *string) ([]byte, error) {
+	token := c.Token
+
+	if authToken != nil {
+		token = *authToken
+	}
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.Token))
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
